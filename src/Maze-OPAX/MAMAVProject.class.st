@@ -15,6 +15,11 @@ MAMAVProject >> artifactID [
 ]
 
 { #category : #'as yet unclassified' }
+MAMAVProject >> fullyQualifiedArtifactName [
+	^self groupID, '.', self artifactID, ':', self version
+]
+
+{ #category : #'as yet unclassified' }
 MAMAVProject >> groupID [
 	^(self children detect: [:each | each tag = 'groupId']) characters.
 ]
