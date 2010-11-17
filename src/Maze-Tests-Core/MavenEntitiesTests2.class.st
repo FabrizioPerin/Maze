@@ -92,8 +92,6 @@ MavenEntitiesTests2 >> testProjectCreation [
 	self assert: (project isNil not).
 	self assert: (xmlDocument root = project).
 	
-	self halt.
-	
 	
 	
 ]
@@ -111,7 +109,7 @@ MavenEntitiesTests2 >> testProjectCreationWithParent [
 	self assert: (project isNil not).
 	self assert: (xmlDocument root = project).
 	
-	self halt.
+
 	
 	
 	
