@@ -29,5 +29,8 @@ MAMAVProjectTest >> testProjectElementResolving [
 	self assert: (project version = '1.0').
 	self assert: (project modelVersion = '4.0.0').
 	self assert: (project artifactID = 'my-project').
+	self assert: (project fullyQualifiedArtifactName = 'org.codehaus.mojo.my-project:1.0').
+	
+	self assert: (project attributes size = 3).
 	
 ]
