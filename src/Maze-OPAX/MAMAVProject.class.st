@@ -5,13 +5,8 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-MAMAVProject class >> xmlTags [
-	^OrderedCollection with: 'project'
-]
-
-{ #category : #'as yet unclassified' }
 MAMAVProject >> artifactID [
-	^(self children detect: [:each | each tag = 'artifactId']) characters.
+	^(self elements detect: [:each | each name = 'artifactId']) stringNodes first string.
 ]
 
 { #category : #'as yet unclassified' }
@@ -21,15 +16,15 @@ MAMAVProject >> fullyQualifiedArtifactName [
 
 { #category : #'as yet unclassified' }
 MAMAVProject >> groupID [
-	^(self children detect: [:each | each tag = 'groupId']) characters.
+	^(self elements detect: [:each | each name = 'groupId']) stringNodes first string.
 ]
 
 { #category : #'as yet unclassified' }
 MAMAVProject >> modelVersion [
-	^(self children detect: [:each | each tag = 'modelVersion']) characters.
+	^(self elements detect: [:each | each name = 'modelVersion']) stringNodes first string.
 ]
 
 { #category : #'as yet unclassified' }
 MAMAVProject >> version [
-	^(self children detect: [:each | each tag = 'version']) characters.
+	^(self elements detect: [:each | each name = 'version']) stringNodes first string.
 ]
