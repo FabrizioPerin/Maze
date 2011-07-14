@@ -1,6 +1,6 @@
 Class {
 	#name : #MAPOMEntities,
-	#superclass : #OPGenericElement,
+	#superclass : #XMLElement,
 	#instVars : [
 		'path'
 	],
