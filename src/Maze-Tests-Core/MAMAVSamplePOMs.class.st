@@ -1,7 +1,7 @@
 Class {
 	#name : #MAMAVSamplePOMs,
 	#superclass : #Object,
-	#category : #'Maze-Tests-OPAX'
+	#category : #'Maze-Tests-XMLObjects'
 }
 
 { #category : #tests }

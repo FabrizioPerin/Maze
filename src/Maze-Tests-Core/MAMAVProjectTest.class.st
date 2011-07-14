@@ -1,7 +1,7 @@
 Class {
 	#name : #MAMAVProjectTest,
 	#superclass : #TestCase,
-	#category : #'Maze-Tests-OPAX'
+	#category : #'Maze-Tests-XMLObjects'
 }
 
 { #category : #tests }
