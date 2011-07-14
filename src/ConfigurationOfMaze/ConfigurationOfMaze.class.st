@@ -45,12 +45,12 @@ ConfigurationOfMaze >> default: spec [
 		spec
 			package: 'XML-Parser' with: [spec repository: 'http://www.squeaksource.com/XMLSupport'];				
 			package: 'Maze-Core' with: [spec repository: 'http://www.squeaksource.com/Maze'.];
-			package: 'Maze-OPAX' with: [
+			package: 'Maze-XMLObjects' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.
 				spec requires: #('XML-Parser')];
 			package: 'Maze-Tests' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.
-				spec requires: #('Maze-Core' 'Maze-OPAX')].
+				spec requires: #('Maze-Core' 'Maze-XMLObjects')].
 	]
 ]
 
