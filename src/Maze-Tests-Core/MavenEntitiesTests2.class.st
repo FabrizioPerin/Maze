@@ -70,7 +70,7 @@ MavenEntitiesTests2 >> testMazeMavProjectCreation [
 	
 	xmlDocument := XMLDOMParser parse: self basicPOM.
 	
-	project := xmlDocument firstTagNamed: 'project'.
+	project := xmlDocument findElementNamed: 'project'.
 	
 	self assert: (project isNil not).
 	self assert: (xmlDocument root = project).
@@ -87,7 +87,7 @@ MavenEntitiesTests2 >> testProjectCreation [
 	
 	xmlDocument := xmlDOMParser parseDocument.
 	
-	project := xmlDocument firstTagNamed: 'project'.
+	project := xmlDocument findElementNamed: 'project'.
 	
 	self assert: (project isNil not).
 	self assert: (xmlDocument root = project).
@@ -104,7 +104,7 @@ MavenEntitiesTests2 >> testProjectCreationWithParent [
 	
 	xmlDocument := xmlDOMParser parseDocument.
 	
-	project := xmlDocument firstTagNamed: 'project'.
+	project := xmlDocument findElementNamed: 'project'.
 	
 	self assert: (project isNil not).
 	self assert: (xmlDocument root = project).

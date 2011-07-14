@@ -7,8 +7,20 @@ Class {
 { #category : #tests }
 MAMAVModulesTest >> testModulesElementCreation [
 
-	self assert: ((OPGenericElement newElementWithTag: 'notAModules') isMemberOf: OPGenericElement).
-	self assert: ((OPGenericElement newElementWithTag: 'modules') isMemberOf: MAMAVModules).
+	| parser factory doc root |
+	parser := XMLDOMParser on: MAMAVSamplePOMs basicPOMWithModules readStream.
+	
+	factory := XMLPluggableElementFactory new
+				elementClass: MAPOMEntities;
+				handleElement: 'modules' withClass: MAMAVModules.
+
+	parser nodeFactory: factory. 
+	
+	doc := parser parseDocument.
+	root := doc root.
+
+	self assert: (root allElements select: [:each | each isMemberOf: MAMAVModules]) size = 1.
+	self assert: (root allElements reject: [:each | each isMemberOf: MAMAVModules]) size = 8.
 ]
 
 { #category : #tests }
@@ -18,18 +30,24 @@ MAMAVModulesTest >> testModulesElementResolving [
     <module>another-project</module>
   </modules>"
 
-	| parser root modules |
+	| parser root modules doc factory |
 	
-	parser := OPOpaxHandler on: MAMAVSamplePOMs basicPOMWithModules readStream.
-	parser startDocument.
-	parser parseDocument.
-	root := parser stack first.
-	
-	self assert: (root allChildren select: [ :each | each isMemberOf: MAMAVModules ]) size = 1.
-	
-	modules := (root allChildren select: [ :each | each isMemberOf: MAMAVModules ]) first.
+	parser := XMLDOMParser on: MAMAVSamplePOMs basicPOMWithModules readStream.
 
-	self assert: (modules children size = 2).
+	factory := XMLPluggableElementFactory new
+				elementClass: MAPOMEntities;
+				handleElement: 'modules' withClass: MAMAVModules.
+
+	parser nodeFactory: factory.  
+	
+	doc := parser parseDocument.
+	root := doc root.
+	
+	self assert: (root allElements select: [ :each | each isMemberOf: MAMAVModules ]) size = 1.
+	
+	modules := (root allElements select: [ :each | each isMemberOf: MAMAVModules ]) first.
+
+	self assert: (modules elements size = 2).
 
 
 ]

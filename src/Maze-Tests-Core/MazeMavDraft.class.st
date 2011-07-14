@@ -8,9 +8,9 @@ Class {
 MazeMavDraft >> testProjectCreation [
 	| xmlDocument project |
 	
-	xmlDocument := XMLDOMParser parse: self basicPOM.
+	xmlDocument := XMLDOMParser parse: MAMAVSamplePOMs basicPOM.
 	
-	project := xmlDocument firstTagNamed: 'project'.
+	project := xmlDocument findElementNamed: 'project'.
 	
 	self assert: (project isNil not).
 	self assert: (xmlDocument root = project).

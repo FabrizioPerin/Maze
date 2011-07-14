@@ -7,23 +7,42 @@ Class {
 { #category : #tests }
 MAMAVDependeciesTest >> testDependenciesElementCreation [
 
-	self assert: ((OPGenericElement newElementWithTag: 'notADependencies') isMemberOf: OPGenericElement).
-	self assert: ((OPGenericElement newElementWithTag: 'dependencies') isMemberOf: MAMAVDependencies).
+	| parser factory doc root |
+	parser := XMLDOMParser on: MAMAVSamplePOMs basicPOMWithDependecies readStream.
+	
+	factory := XMLPluggableElementFactory new
+				elementClass: MAPOMEntities;
+				handleElement: 'dependencies' withClass: MAMAVDependencies.
+
+	parser nodeFactory: factory. 
+	
+	doc := parser parseDocument.
+	root := doc root.
+
+	self assert: (root allElements select: [:each | each isMemberOf: MAMAVDependencies]) size = 1.
+	self assert: (root allElements reject: [:each | each isMemberOf: MAMAVDependencies]) size = 12.
 ]
 
 { #category : #tests }
 MAMAVDependeciesTest >> testDependenciesElementResolving [
-	| parser root dependencies |
+	| parser root dependencies doc factory |
 	
-	parser := OPOpaxHandler on: MAMAVSamplePOMs basicPOMWithDependecies readStream.
-	parser startDocument.
-	parser parseDocument.
-	root := parser stack first.
+	parser := XMLDOMParser on: MAMAVSamplePOMs basicPOMWithDependecies readStream.
+	
+	factory := XMLPluggableElementFactory new
+				elementClass: MAPOMEntities;
+				handleElement: 'dependencies' withClass: MAMAVDependencies;
+				handleElement: 'dependency' withClass: MAMAVDependency.
 
-	self assert: (root allChildren select: [:each | each isMemberOf: MAMAVDependencies ]) size = 1.
+	parser nodeFactory: factory.  
 	
-	dependencies := (root allChildren select: [:each | each isMemberOf: MAMAVDependencies ]) first.
+	doc := parser parseDocument.
+	root := doc root.
+
+	self assert: (root allElements select: [:each | each isMemberOf: MAMAVDependencies ]) size = 1.
 	
-	self assert: (dependencies children size = 1).
-	self assert: (dependencies children first isMemberOf: MAMAVDependency).
+	dependencies := (root allElements select: [:each | each isMemberOf: MAMAVDependencies ]) first.
+	
+	self assert: (dependencies elements size = 1).
+	self assert: (dependencies elements first isMemberOf: MAMAVDependency).
 ]
