@@ -56,7 +56,13 @@ ConfigurationOfMaze >> default: spec [
 			package: 'Maze-XMLObjects' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.
 				spec requires: 'XMLSupport for MooseJEE'];
-			package: 'Maze-Tests' with: [
+			package: 'Maze-Tests-Core' with: [
+				spec repository: 'http://www.squeaksource.com/Maze'.
+				spec requires: #('Maze-Core')];
+			package: 'Maze-Tests-Importers' with: [
+				spec repository: 'http://www.squeaksource.com/Maze'.
+				spec requires: #('Maze-Core' 'Maze-XMLObjects')];
+			package: 'Maze-Tests-XMLObjects' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.
 				spec requires: #('Maze-Core' 'Maze-XMLObjects')].
 	]
