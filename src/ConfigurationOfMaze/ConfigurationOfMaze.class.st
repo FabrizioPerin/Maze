@@ -59,7 +59,7 @@ ConfigurationOfMaze >> default: spec [
 			package: 'Maze-Tests-Core' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.
 				spec requires: #('Maze-Core')];
-			package: 'Maze-Tests-Importers' with: [
+			package: 'Maze-Tests-Importer' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.
 				spec requires: #('Maze-Core' 'Maze-XMLObjects')];
 			package: 'Maze-Tests-XMLObjects' with: [
