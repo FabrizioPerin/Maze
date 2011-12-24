@@ -83,3 +83,7 @@ MAMAVSamplePOMs class >> basicPOMWithModules [
   </modules>
 </project>'
 ]
+
+{ #category : #'as yet unclassified' }
+MAMAVSamplePOMs >> seeClassSide [
+]
