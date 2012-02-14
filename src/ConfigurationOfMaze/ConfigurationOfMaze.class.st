@@ -43,19 +43,19 @@ ConfigurationOfMaze >> default: spec [
 	spec for: #common do: [
 		spec blessing: #default.
 		
-		spec  project: 'XMLSupport for MooseJEE' with: [
+		"spec  project: 'XMLSupport for MooseJEE' with: [
 			spec
 				className: 'ConfigurationOfXMLSupport';
 				file: 'ConfigurationOfXMLSupport';
 				version: '1.2.0';
-				repository: 'http://www.squeaksource.com/XMLSupport' ].
+				repository: 'http://www.squeaksource.com/XMLSupport' ]."
 		
 		spec			
 			package: 'Maze-Core' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.];
 			package: 'Maze-XMLObjects' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.
-				spec requires: 'XMLSupport for MooseJEE'];
+				"spec requires: 'XMLSupport for MooseJEE'"];
 			package: 'Maze-Tests-Core' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.
 				spec requires: #('Maze-Core')];
