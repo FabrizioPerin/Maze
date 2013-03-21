@@ -37,6 +37,31 @@ ConfigurationOfMaze class >> project [
 ]
 
 { #category : #defaults }
+ConfigurationOfMaze >> baseline10: spec [ 
+	<version: '1.0-baseline'>
+	
+	spec for: #common do: [
+		spec blessing: #default.
+		
+		spec			
+			package: 'Maze-Core' with: [
+				spec repository: 'http://www.squeaksource.com/Maze'.];
+			package: 'Maze-XMLObjects' with: [
+				spec repository: 'http://www.squeaksource.com/Maze'.
+				"spec requires: 'XMLSupport for MooseJEE'"];
+			package: 'Maze-Tests-Core' with: [
+				spec repository: 'http://www.squeaksource.com/Maze'.
+				spec requires: #('Maze-Core')];
+			package: 'Maze-Tests-Importer' with: [
+				spec repository: 'http://www.squeaksource.com/Maze'.
+				spec requires: #('Maze-Core' 'Maze-XMLObjects')];
+			package: 'Maze-Tests-XMLObjects' with: [
+				spec repository: 'http://www.squeaksource.com/Maze'.
+				spec requires: #('Maze-Core' 'Maze-XMLObjects')].
+	]
+]
+
+{ #category : #defaults }
 ConfigurationOfMaze >> default: spec [ 
 	<version: 'default'>
 	
@@ -66,6 +91,15 @@ ConfigurationOfMaze >> default: spec [
 				spec repository: 'http://www.squeaksource.com/Maze'.
 				spec requires: #('Maze-Core' 'Maze-XMLObjects')].
 	]
+]
+
+{ #category : #accessing }
+ConfigurationOfMaze >> development: spec [
+	<symbolicVersion: #development>
+
+	spec for: #'pharo1.4.x' version: 'default'.
+	spec for: #'pharo2.x' version: '1.0-baseline'.
+
 ]
 
 { #category : #accessing }
