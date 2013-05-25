@@ -30,6 +30,12 @@ ConfigurationOfMaze class >> loadDefault [
 	(self project version: 'default') load.
 ]
 
+{ #category : #loading }
+ConfigurationOfMaze class >> loadDevelopment [
+
+	(self project version: 'development') load.
+]
+
 { #category : #accessing }
 ConfigurationOfMaze class >> project [
 
@@ -58,6 +64,25 @@ ConfigurationOfMaze >> baseline10: spec [
 			package: 'Maze-Tests-XMLObjects' with: [
 				spec repository: 'http://www.squeaksource.com/Maze'.
 				spec requires: #('Maze-Core' 'Maze-XMLObjects')].
+	]
+]
+
+{ #category : #defaults }
+ConfigurationOfMaze >> baseline20: spec [ 
+	<version: '2.0-baseline'>
+	
+	spec for: #common do: [
+		spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
+		spec blessing: #development.
+		
+		spec			
+			package: 'Maze-Core';
+			package: 'Maze-XMLObjects';
+			
+			"Tests"
+			package: 'Maze-Tests-Core' with: [	spec requires: #( 'Maze-Core') ];
+			package: 'Maze-Tests-Importer' with: [	spec requires: #( 'Maze-Core' 'Maze-XMLObjects' ) ];
+			package: 'Maze-Tests-XMLObjects' with: [ spec requires: #('Maze-Core' 'Maze-XMLObjects' ) ].
 	]
 ]
 
@@ -97,8 +122,8 @@ ConfigurationOfMaze >> default: spec [
 ConfigurationOfMaze >> development: spec [
 	<symbolicVersion: #development>
 
-	spec for: #'pharo1.4.x' version: 'default'.
-	spec for: #'pharo2.x' version: '1.0-baseline'.
+	spec for: #'pharo1.4.x' version: '1.0-baseline'.
+	spec for: #'pharo2.x' version: '2.0-baseline'.
 
 ]
 
