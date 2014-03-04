@@ -87,6 +87,25 @@ ConfigurationOfMaze >> baseline20: spec [
 ]
 
 { #category : #defaults }
+ConfigurationOfMaze >> baseline30: spec [ 
+	<version: '3.0-baseline'>
+	
+	spec for: #common do: [
+		spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
+		spec blessing: #development.
+		
+		spec			
+			package: 'Maze-Core';
+			package: 'Maze-XMLObjects';
+			
+			"Tests"
+			package: 'Maze-Tests-Core' with: [	spec requires: #( 'Maze-Core') ];
+			package: 'Maze-Tests-Importer' with: [	spec requires: #( 'Maze-Core' 'Maze-XMLObjects' ) ];
+			package: 'Maze-Tests-XMLObjects' with: [ spec requires: #('Maze-Core' 'Maze-XMLObjects' ) ].
+	]
+]
+
+{ #category : #defaults }
 ConfigurationOfMaze >> default: spec [ 
 	<version: 'default'>
 	
@@ -123,7 +142,8 @@ ConfigurationOfMaze >> development: spec [
 	<symbolicVersion: #development>
 
 	spec for: #'pharo1.4.x' version: '1.0-baseline'.
-	spec for: #'pharo2.x' version: '2.0-baseline'.
+	spec for: #'pharo2.x' version: '2.0'.
+	spec for: #'pharo3.x' version: '3.0-baseline'.
 
 ]
 
@@ -137,4 +157,22 @@ ConfigurationOfMaze >> project [
 		constructor := (Smalltalk at: #MetacelloVersionConstructor) on: self.
 		project := constructor project.
 		project]
+]
+
+{ #category : #defaults }
+ConfigurationOfMaze >> version20: spec [ 
+	<version: '2.0' imports: #('2.0-baseline')>
+	
+	spec for: #common do: [
+		spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
+		spec blessing: #development.
+		
+		spec			
+			package: 'Maze-Core' with: 'Maze-Core-FabrizioPerin.3';
+			package: 'Maze-XMLObjects' with: 'Maze-XMLObjects-FabrizioPerin.1';
+			
+			"Tests"
+			package: 'Maze-Tests-Core' with: 'Maze-Tests-Core-FabrizioPerin.1';
+			package: 'Maze-Tests-Importer' with: 'Maze-Tests-Importer-FabrizioPerin.1';
+			package: 'Maze-Tests-XMLObjects' with: 'Maze-Tests-XMLObjects-FabrizioPerin.2' ]
 ]
