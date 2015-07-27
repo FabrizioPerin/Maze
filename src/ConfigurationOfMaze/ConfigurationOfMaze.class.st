@@ -144,6 +144,8 @@ ConfigurationOfMaze >> development: spec [
 	spec for: #'pharo1.4.x' version: '1.0-baseline'.
 	spec for: #'pharo2.x' version: '2.0'.
 	spec for: #'pharo3.x' version: '3.0-baseline'.
+	spec for: #'pharo4.x' version: '3.0-baseline'.
+	spec for: #'pharo5.x' version: '3.0-baseline'.
 
 ]
 
