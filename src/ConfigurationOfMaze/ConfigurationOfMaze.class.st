@@ -121,18 +121,18 @@ ConfigurationOfMaze >> default: spec [
 		
 		spec			
 			package: 'Maze-Core' with: [
-				spec repository: 'http://www.squeaksource.com/Maze'.];
+				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.];
 			package: 'Maze-XMLObjects' with: [
-				spec repository: 'http://www.squeaksource.com/Maze'.
+				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
 				"spec requires: 'XMLSupport for MooseJEE'"];
 			package: 'Maze-Tests-Core' with: [
-				spec repository: 'http://www.squeaksource.com/Maze'.
+				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
 				spec requires: #('Maze-Core')];
 			package: 'Maze-Tests-Importer' with: [
-				spec repository: 'http://www.squeaksource.com/Maze'.
+				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
 				spec requires: #('Maze-Core' 'Maze-XMLObjects')];
 			package: 'Maze-Tests-XMLObjects' with: [
-				spec repository: 'http://www.squeaksource.com/Maze'.
+				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
 				spec requires: #('Maze-Core' 'Maze-XMLObjects')].
 	]
 ]
