@@ -18,10 +18,18 @@ MAZEMavenDependencyTests >> testCreation [
 	self assert: dependency sourceProject isNil not.
 	self assert: (dependency sourceProject isMemberOf: MAZEMavenProject).
 	self assert: (dependency sourceProject = sp).
+	
+	self assert: sp referencedProjects isNil not.
+	self assert: (sp referencedProjects size = 1).
+	self assert: ((sp referencedProjects at: 1) =dependency).
 
 	self assert: dependency targetProject isNil not.
 	self assert: (dependency targetProject isMemberOf: MAZEMavenProject).
 	self assert: (dependency targetProject = tp).
+	
+	self assert: tp referencingProjects isNil not.
+	self assert: (tp referencingProjects size = 1).
+	self assert: ((tp referencingProjects at: 1) = dependency).
 ]
 
 { #category : #'as yet unclassified' }
