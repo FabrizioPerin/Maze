@@ -1,15 +1,34 @@
 Class {
 	#name : #MAZEMavenProject,
-	#superclass : #Object,
+	#superclass : #FAMIXNamedEntity,
 	#instVars : [
 		'groupID',
 		'artifactID',
 		'version',
 		'packaging',
-		'modelVersion'
+		'modelVersion',
+		'referencedProjects',
+		'referencingProjects'
 	],
 	#category : #'Maze-Core'
 }
+
+{ #category : #'as yet unclassified' }
+MAZEMavenProject class >> annotation [
+	<MSEClass: #MavenProject super: #FAMIXNamedEntity>
+	<package: #MAZE>
+	^self
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> addReferencedProjects: aMazeMavenDependency [
+	referencedProjects add: aMazeMavenDependency
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> addReferencingProjects: aMazeMavenDependency [
+	referencingProjects add: aMazeMavenDependency
+]
 
 { #category : #accessing }
 MAZEMavenProject >> artifactID [
@@ -19,6 +38,11 @@ MAZEMavenProject >> artifactID [
 { #category : #accessing }
 MAZEMavenProject >> artifactID: aString [
 	artifactID := aString
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> belongsTo [
+^self
 ]
 
 { #category : #'as yet unclassified' }
@@ -34,6 +58,13 @@ MAZEMavenProject >> groupID [
 { #category : #accessing }
 MAZEMavenProject >> groupID: aString [
 	groupID := aString
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> initialize [
+	super initialize.
+	referencedProjects := FMMultivalueLink on: self opposite: #sourceProject:.
+	referencingProjects := FMMultivalueLink on: self opposite: #targetProject:.
 ]
 
 { #category : #accessing }
@@ -54,6 +85,45 @@ MAZEMavenProject >> packaging [
 { #category : #accessing }
 MAZEMavenProject >> packaging: anObject [
 	packaging := anObject
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> printOn: aStream [
+
+	self groupID ifNotNil: [ aStream nextPutAll: self groupID , '.' ].
+	self artifactID ifNotNil: [ aStream nextPutAll: self artifactID ].
+	self version ifNotNil: [ aStream nextPutAll: ':' , self version ].
+	
+	aStream nextPutAll: '(MAZEMavenProject)'
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> referencedProjects [
+	<MSEProperty: #referencedProjects type: #MAZEMavenDependency opposite: #sourceProject> <multivalued> <derived>
+	<MSEComment: 'Dependencies to other MAVEN projects. from-side of the association'>
+	^ referencedProjects
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> referencedProjects: aMAZEMavenDependency [
+	referencedProjects value: aMAZEMavenDependency
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> referencingProjects [
+ 	<MSEProperty: #referencingProjects type: #MAZEMavenDependency opposite: #targetProject> <multivalued> <derived>
+	<MSEComment: 'Dependencies to other MAVEN projects. from-side of the association'>
+	^ referencingProjects
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> referencingProjects: aMAZEMavenDependency [
+	referencingProjects value: aMAZEMavenDependency
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> sourceText [
+	^ ''
 ]
 
 { #category : #accessing }
