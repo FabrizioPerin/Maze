@@ -33,7 +33,7 @@ ConfigurationOfMaze class >> loadDefault [
 { #category : #loading }
 ConfigurationOfMaze class >> loadDevelopment [
 
-	(self project version: 'development') load.
+	(self project version: #development) load.
 ]
 
 { #category : #accessing }
@@ -102,38 +102,6 @@ ConfigurationOfMaze >> baseline30: spec [
 			package: 'Maze-Tests-Core' with: [	spec requires: #( 'Maze-Core') ];
 			package: 'Maze-Tests-Importer' with: [	spec requires: #( 'Maze-Core' 'Maze-XMLObjects' ) ];
 			package: 'Maze-Tests-XMLObjects' with: [ spec requires: #('Maze-Core' 'Maze-XMLObjects' ) ].
-	]
-]
-
-{ #category : #defaults }
-ConfigurationOfMaze >> default: spec [ 
-	<version: 'default'>
-	
-	spec for: #common do: [
-		spec blessing: #default.
-		
-		"spec  project: 'XMLSupport for MooseJEE' with: [
-			spec
-				className: 'ConfigurationOfXMLSupport';
-				file: 'ConfigurationOfXMLSupport';
-				version: '1.2.0';
-				repository: 'http://www.squeaksource.com/XMLSupport' ]."
-		
-		spec			
-			package: 'Maze-Core' with: [
-				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.];
-			package: 'Maze-XMLObjects' with: [
-				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
-				"spec requires: 'XMLSupport for MooseJEE'"];
-			package: 'Maze-Tests-Core' with: [
-				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
-				spec requires: #('Maze-Core')];
-			package: 'Maze-Tests-Importer' with: [
-				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
-				spec requires: #('Maze-Core' 'Maze-XMLObjects')];
-			package: 'Maze-Tests-XMLObjects' with: [
-				spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
-				spec requires: #('Maze-Core' 'Maze-XMLObjects')].
 	]
 ]
 
