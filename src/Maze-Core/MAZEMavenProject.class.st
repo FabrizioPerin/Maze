@@ -8,7 +8,9 @@ Class {
 		'packaging',
 		'modelVersion',
 		'referencedProjects',
-		'referencingProjects'
+		'referencingProjects',
+		'parentProject',
+		'childProject'
 	],
 	#category : #'Maze-Core'
 }
@@ -43,6 +45,21 @@ MAZEMavenProject >> artifactID: aString [
 { #category : #accessing }
 MAZEMavenProject >> belongsTo [
 ^self
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> childProject [
+	^ childProject
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> childProject: aMAZEMavenProject [
+
+		(aMAZEMavenProject = self childProject)
+		ifFalse: [ 
+			childProject := aMAZEMavenProject.
+			aMAZEMavenProject parentProject: self ]. 
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -85,6 +102,21 @@ MAZEMavenProject >> packaging [
 { #category : #accessing }
 MAZEMavenProject >> packaging: anObject [
 	packaging := anObject
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> parentProject [
+	^ parentProject
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> parentProject: aMAZEMavenProject [
+
+	(aMAZEMavenProject = self parentProject)
+		ifFalse: [ 
+			parentProject := aMAZEMavenProject.
+			aMAZEMavenProject childProject: self ]. 
+
 ]
 
 { #category : #accessing }
