@@ -3,7 +3,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'fileName',
-		'parser',
 		'factory'
 	],
 	#category : #'Maze-Core'
@@ -11,7 +10,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 MAZEPomFileParser class >> parserFileNamed: aString [
-	^self new fileName: aString; parser.
+	^self new fileName: aString; parse.
 ]
 
 { #category : #'as yet unclassified' }
@@ -39,19 +38,12 @@ MAZEPomFileParser >> initialize [
 
 { #category : #'as yet unclassified' }
 MAZEPomFileParser >> parse [
+	| doc parser |
 	
-	| doc root dependencies |
-	parser := XMLDOMParser parseFileNamed: fileName.	
+	parser := XMLDOMParser onFileNamed: fileName.
+	parser nodeFactory: factory.
 
-	parser nodeFactory: factory.  
-	
 	doc := parser parseDocument.
-	root := doc root.
-
-	self assert: (root allElements select: [:each | each isMemberOf: MAMAVDependencies ]) size = 1.
 	
-	dependencies := (root allElements select: [:each | each isMemberOf: MAMAVDependencies ]) first.
-	
-	self assert: (dependencies elements size = 1).
-	self assert: (dependencies elements first isMemberOf: MAMAVDependency).
+	^ doc
 ]
