@@ -26,6 +26,14 @@ MAMAVProject >> createMooseEntity [
 ]
 
 { #category : #'as yet unclassified' }
+MAMAVProject >> dependenciesElement [
+	^ self elements
+		detect: [ :each | each isMemberOf: MAMAVDependencies ]
+		ifFound: [ :element | element ]
+		ifNone: [ nil ]
+]
+
+{ #category : #'as yet unclassified' }
 MAMAVProject >> fullyQualifiedArtifactName [
 	^self groupID, '.', self artifactID, ':', self version
 ]
@@ -43,6 +51,14 @@ MAMAVProject >> modelVersion [
 	^ self elements
 		detect: [ :each | each name = 'modelVersion' ]
 		ifFound: [ :element | element stringNodes first string ]
+		ifNone: [ nil ]
+]
+
+{ #category : #'as yet unclassified' }
+MAMAVProject >> parentProject [
+	^ self elements
+		detect: [ :each | each isMemberOf: MAMAVParent ]
+		ifFound: [ :element | element ]
 		ifNone: [ nil ]
 ]
 
