@@ -6,3 +6,9 @@ Class {
 	],
 	#category : #'Maze-XMLObjects'
 }
+
+{ #category : #'as yet unclassified' }
+MAPOMEntities >> createMooseEntity [
+
+	^ self subclassResponsibility
+]

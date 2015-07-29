@@ -6,5 +6,8 @@ Class {
 
 { #category : #accessing }
 MAMAVParent >> relativePath [
-	^(self elements detect: [:each | each name = 'relativePath']) stringNodes first string.
+	^ self elements
+		detect: [ :each | each name = 'relativePath' ]
+		ifFound: [ :element | element stringNodes first string ]
+		ifNone: [ nil ]
 ]
