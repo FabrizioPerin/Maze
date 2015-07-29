@@ -70,6 +70,8 @@ MAZEMavenProjectTests >> testCreation [
 	self assert: (project artifactID = 'my-project').
 	self assert: (project version = '1.0').
 	self assert: (project modelVersion = '4.0.0').
+	self assert: (project parentProject = nil).
+	self assert: (project childProject = nil).
 	self assert: (project fullyQualifiedArtifactName = 'org.codehaus.mojo.my-project:1.0').
 	self assert: (project referencedProjects isMemberOf: FMMultivalueLink).
 	self assert: (project referencedProjects size = 0).
@@ -85,12 +87,49 @@ MAZEMavenProjectTests >> testCreationSimple [
 		
 	self assert: (project isMemberOf: MAZEMavenProject).
 	self assert: project groupID isNil.
-	self assert: project groupID isNil.
-	self assert: project groupID isNil.
-	self assert: project groupID isNil.
-	self assert: project groupID isNil.
+	self assert: project artifactID isNil.
+	self assert: project version isNil.
+	self assert: project packaging isNil.
+	self assert: project modelVersion isNil.
+	self assert: project parentProject isNil.
+	self assert: project childProject isNil.
+	self assert: project modelVersion isNil.
 	self assert: (project referencedProjects isMemberOf: FMMultivalueLink).
 	self assert: (project referencedProjects size = 0).
 	self assert: (project referencingProjects isMemberOf: FMMultivalueLink).
 	self assert: (project referencingProjects size = 0).
+]
+
+{ #category : #'as yet unclassified' }
+MAZEMavenProjectTests >> testSetChildProject [
+	| project childProject |
+	
+	project := MAZEMavenProject new.
+	childProject := MAZEMavenProject new.
+	
+	self assert: project childProject isNil.
+	self assert: childProject parentProject isNil.
+	
+	project childProject: childProject.
+	
+	self assert: project childProject = childProject.
+	self assert: childProject parentProject = project.
+	
+]
+
+{ #category : #'as yet unclassified' }
+MAZEMavenProjectTests >> testSetParentProject [
+	| project parentProject |
+	
+	project := MAZEMavenProject new.
+	parentProject := MAZEMavenProject new.
+	
+	self assert: project parentProject isNil.
+	self assert: parentProject childProject isNil.
+	
+	project parentProject: parentProject.
+	
+	self assert: project parentProject = parentProject.
+	self assert: parentProject childProject = project.
+	
 ]
