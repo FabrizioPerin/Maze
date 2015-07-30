@@ -97,10 +97,11 @@ ConfigurationOfMaze >> baseline30: spec [
 		spec			
 			package: 'Maze-Core';
 			package: 'Maze-XMLObjects';
+			package: 'Maze-Importer';
 			
 			"Tests"
 			package: 'Maze-Tests-Core' with: [	spec requires: #( 'Maze-Core') ];
-			package: 'Maze-Tests-Importer' with: [	spec requires: #( 'Maze-Core' 'Maze-XMLObjects' ) ];
+			package: 'Maze-Tests-Importer' with: [	spec requires: #( 'Maze-Core' 'Maze-Importer' ) ];
 			package: 'Maze-Tests-XMLObjects' with: [ spec requires: #('Maze-Core' 'Maze-XMLObjects' ) ].
 	]
 ]
@@ -148,8 +149,26 @@ ConfigurationOfMaze >> version20: spec [
 ]
 
 { #category : #defaults }
+ConfigurationOfMaze >> version21: spec [ 
+	<version: '2.1' imports: #('2.0-baseline')>
+	
+	spec for: #common do: [
+		spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
+		spec blessing: #release.
+		
+		spec			
+			package: 'Maze-Core' with: 'Maze-Core-FabrizioPerin.5';
+			package: 'Maze-XMLObjects' with: 'Maze-XMLObjects-FabrizioPerin.1';
+			
+			"Tests"
+			package: 'Maze-Tests-Core' with: 'Maze-Tests-Core-FabrizioPerin.3';
+			package: 'Maze-Tests-Importer' with: 'Maze-Tests-Importer-FabrizioPerin.1';
+			package: 'Maze-Tests-XMLObjects' with: 'Maze-Tests-XMLObjects-FabrizioPerin.3' ]
+]
+
+{ #category : #defaults }
 ConfigurationOfMaze >> version30: spec [ 
-	<version: '3.0' imports: #('2.0-baseline')>
+	<version: '3.0' imports: #('3.0-baseline')>
 	
 	spec for: #common do: [
 		spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
