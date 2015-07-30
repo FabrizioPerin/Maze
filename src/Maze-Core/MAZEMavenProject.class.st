@@ -11,7 +11,8 @@ Class {
 		'referencingProjects',
 		'parentProject',
 		'childProject',
-		'pomFile'
+		'pomFile',
+		'parentProjectNode'
 	],
 	#category : #'Maze-Core'
 }
@@ -118,6 +119,16 @@ MAZEMavenProject >> parentProject: aMAZEMavenProject [
 			parentProject := aMAZEMavenProject.
 			aMAZEMavenProject childProject: self ]. 
 
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> parentProjectNode [
+	^ parentProjectNode
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> parentProjectNode: anObject [
+	parentProjectNode := anObject
 ]
 
 { #category : #accessing }
