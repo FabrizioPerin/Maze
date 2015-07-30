@@ -10,7 +10,8 @@ Class {
 		'referencedProjects',
 		'referencingProjects',
 		'parentProject',
-		'childProject'
+		'childProject',
+		'pomFile'
 	],
 	#category : #'Maze-Core'
 }
@@ -117,6 +118,20 @@ MAZEMavenProject >> parentProject: aMAZEMavenProject [
 			parentProject := aMAZEMavenProject.
 			aMAZEMavenProject childProject: self ]. 
 
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> pomFile [
+	^ pomFile
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> pomFile: aMazeMavenPOMFile [
+
+	self pomFile = aMazeMavenPOMFile
+		ifFalse: [ 
+			pomFile := aMazeMavenPOMFile.
+			aMazeMavenPOMFile project: self ]
 ]
 
 { #category : #accessing }

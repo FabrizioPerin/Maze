@@ -3,7 +3,12 @@ Class {
 	#superclass : #MJAssociation,
 	#instVars : [
 		'sourceProject',
-		'targetProject'
+		'targetProject',
+		'artifactID',
+		'groupID',
+		'version',
+		'type',
+		'scope'
 	],
 	#category : #'Maze-Core'
 }
@@ -16,8 +21,28 @@ MAZEMavenDependency class >> annotation [
 ]
 
 { #category : #accessing }
+MAZEMavenDependency >> artifactID [
+	^ artifactID
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> artifactID: aString [
+	artifactID := aString
+]
+
+{ #category : #accessing }
 MAZEMavenDependency >> from [
 	^ self sourceProject
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> groupID [
+	^ groupID
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> groupID: aString [
+	groupID := aString
 ]
 
 { #category : #accessing }
@@ -39,6 +64,16 @@ MAZEMavenDependency >> initialize [
 		
 	^ self
 	
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> scope [
+	^ scope
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> scope: anObject [
+	scope := anObject
 ]
 
 { #category : #accessing }
@@ -76,4 +111,24 @@ MAZEMavenDependency >> targetProject: aMAZEMAVENProject [
 { #category : #accessing }
 MAZEMavenDependency >> to [
 	^ self targetProject
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> type [
+	^ type
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> type: anObject [
+	type := anObject
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> version [
+	^ version
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> version: anObject [
+	version := anObject
 ]
