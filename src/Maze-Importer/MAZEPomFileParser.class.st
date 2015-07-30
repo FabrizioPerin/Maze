@@ -25,7 +25,9 @@ MAZEPomFileParser >> fileName: aString [
 
 { #category : #'as yet unclassified' }
 MAZEPomFileParser >> initialize [
-
+	
+	super initialize.
+	
 	factory := XMLPluggableElementFactory new
 		elementClass: MAPOMEntities;
 		handleElement: 'parent' withClass: MAMAVParent;
@@ -33,7 +35,9 @@ MAZEPomFileParser >> initialize [
 		handleElement: 'modules' withClass: MAMAVModules;
 		handleElement: 'module' withClass: MAMAVModule;
 		handleElement: 'dependencies' withClass: MAMAVDependencies;
-		handleElement: 'dependency' withClass: MAMAVDependency
+		handleElement: 'dependency' withClass: MAMAVDependency.
+	
+	^ self
 ]
 
 { #category : #'as yet unclassified' }

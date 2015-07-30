@@ -2,8 +2,8 @@ Class {
 	#name : #MAZEMavenPOMImporter,
 	#superclass : #Object,
 	#instVars : [
-		'mm',
-		'rootFolderName'
+		'rootFolderName',
+		'model'
 	],
 	#category : #'Maze-Importer'
 }
@@ -13,55 +13,7 @@ MAZEMavenPOMImporter class >> with: aMooseModel on: aRootFolderName [
 	^ self new initializeWith: aMooseModel on: aRootFolderName 
 ]
 
-{ #category : #'as yet unclassified' }
-MAZEMavenPOMImporter >> importEjbJarFromFolder: aString [
-	
-	| fileSystem entries directoryEntries parser factory doc root counter |
-	
-	fileSystem := FileSystem disk referenceTo: aString.
-	entries := CollectVisitor breadthFirst: fileSystem.
-	
-	directoryEntries := entries select: [:entry| '.*ejb-jar.xml$' asRegex matches: entry reference name ].
-
-	counter := 1.			
-	UIManager default
-		displayProgress: 'Importing From ejb-jar files'
-		from: 1 
-		to: directoryEntries size
-		during: [ :bar | 
-			bar  value: counter.
-			
-			directoryEntries do: [:entry |
-				
-					 | stream |
-					
-					stream := StandardFileStream readOnlyFileNamed: (entry reference name).
-					parser := XMLDOMParser on: stream.
-					factory := XMLPluggableElementFactory new
-									elementClass: MJEJBeanElement;
-									handleElement: 'entity' withClass: MJEntityElement;
-									handleElement: 'message-driven' withClass: MJMessageDrivenElement;
-									handleElement: 'session' withClass: MJSessionElement;
-									handleElement: 'container-transaction' withClass: MJContainerTransactionElement.
-					parser nodeFactory: factory.
-					doc := parser parseDocument.
-					root := doc root.
-							
-					(root allElements select: [:eachElement | eachElement class = MJSessionElement])  do: [:eachElement |
-							eachElement populate: self].
-					(root allElements select: [:eachElement | eachElement class = MJEntityElement])  do: [:eachElement |
-							eachElement populate: self].
-					(root allElements select: [:eachElement | eachElement class = MJMessageDrivenElement])  do: [:eachElement |
-							eachElement populate: self].
-					(root allElements select: [:eachElement | eachElement class = MJContainerTransactionElement]) do: [:eachElement |
-							eachElement populate: self].
-					counter := counter + 1.
-					bar value: counter.
-				]].
-
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #import }
 MAZEMavenPOMImporter >> importPOMsIntoMooseModel [
 	| rootFolder pomFileDocs pomFiles |
 	
@@ -85,24 +37,36 @@ MAZEMavenPOMImporter >> importPOMsIntoMooseModel [
 					pomFile := MAZEMavenPOMFile new.
 					pomFile project: projectNodes first.
 					
-					mm silentlyAdd: pomFile.
-					mm silentlyAdd: projectNodes first.	
+					model silentlyAdd: pomFile.
+					model silentlyAdd: projectNodes first.	
 					
 					"creating dependencies"
 					dependenciesNodes := root allElements select: [ :el | el isMemberOf: MAMAVDependency] thenCollect: #createFamixEntity.
 					
+					dependenciesNodes do: [ :dependency | dependency sourceProject: projectNodes first ].
+					
+					model silentlyAddAll: dependenciesNodes.
 					
 					bar increment ] ]
 		description: 'Importing pom files'
 		length: pomFileDocs size.
-		
-	^ pomFileDocs
+	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MAZEMavenPOMImporter >> initializeWith: aMooseModel on: aRootFolderName [
-	mm := aMooseModel.
+	model := aMooseModel.
 	rootFolderName := aRootFolderName.
 	
 	^ self
+]
+
+{ #category : #accessing }
+MAZEMavenPOMImporter >> model [
+	^ model
+]
+
+{ #category : #accessing }
+MAZEMavenPOMImporter >> rootFolderName [
+	^ rootFolderName
 ]
