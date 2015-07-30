@@ -22,6 +22,8 @@ MAMAVProject >> createFamixEntity [
 	project packaging: self packaging.
 	project modelVersion: self modelVersion.
 	project version: self version.
+	project parentProjectNode: self parentProject.
+	
 
 	"project parentProject: (self parentProject ifNotNil:[ :pp | pp createMooseEntity]).
 	self dependenciesElement ifNotNil:[:deps | deps dependencies collect: #createMooseEntity]."
@@ -39,7 +41,17 @@ MAMAVProject >> dependenciesElement [
 
 { #category : #'as yet unclassified' }
 MAMAVProject >> fullyQualifiedArtifactName [
-	^self groupID, '.', self artifactID, ':', self version
+	| resultString |
+	
+	resultString := ''.
+	
+	self groupID ifNotNil: [:gId | resultString := resultString , gId].
+	resultString := resultString , '.'.
+	self artifactID ifNotNil: [:aId | resultString := resultString , aId].
+	resultString := resultString , ':'.
+	self version ifNotNil: [:v | resultString := resultString , v].
+	
+	^ resultString
 ]
 
 { #category : #'as yet unclassified' }
