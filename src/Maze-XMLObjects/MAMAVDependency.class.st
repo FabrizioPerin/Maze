@@ -5,16 +5,17 @@ Class {
 }
 
 { #category : #accessing }
-MAMAVDependency >> createMooseEntity [
+MAMAVDependency >> createFamixEntity [
 	| project |
 	
-	project := MAZEMavenProject new.
+	project := MAZEMavenDependency new.
 	project artifactID: self artifactID.
 	project groupID: self groupID.
-	project modelVersion: self modelVersion.
 	project version: self version.
+	project type: self type.
+	project scope: self scope.
 	
-	^project
+	^ project
 ]
 
 { #category : #accessing }

@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #accessing }
-MAMAVParent >> createMooseEntity [
+MAMAVParent >> createFamixEntity [
 	| project |
 	
 	project := MAZEMavenProject new.
