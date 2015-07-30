@@ -19,8 +19,8 @@ MAMAVDependecyTest >> testDependencyElementCreation [
 	doc := parser parseDocument.
 	root := doc root.
 
-	self assert: (root allElements select: [:each | each isMemberOf: MAMAVDependency]) size = 1.
-	self assert: (root allElements reject: [:each | each isMemberOf: MAMAVDependency]) size = 12.
+	self assert: (root allElements select: [:each | each isMemberOf: MAMAVDependency]) size = 2.
+	self assert: (root allElements reject: [:each | each isMemberOf: MAMAVDependency]) size = 17.
 ]
 
 { #category : #tests }
@@ -49,9 +49,9 @@ MAMAVDependecyTest >> testDependencyElementResolving [
 	doc := parser parseDocument.
 	root := doc root.
 	
-	self assert: (root allElements select: [ :each | each isMemberOf: MAMAVDependency ]) size = 1.
+	self assert: (root allElements select: [ :each | each isMemberOf: MAMAVDependency ]) size = 2.
 	
-	dependency := (root allElements select: [ :each | each isMemberOf: MAMAVDependency ]) first.
+	dependency := (root allElements select: [ :each | each isMemberOf: MAMAVDependency ]) second.
 		
 	self assert: dependency elements size = 6.
 	self assert: dependency groupID = 'junit'.

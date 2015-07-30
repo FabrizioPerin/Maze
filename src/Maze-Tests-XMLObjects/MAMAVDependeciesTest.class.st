@@ -31,7 +31,7 @@ MAMAVDependeciesTest >> testDependenciesElementCreation [
 	root := doc root.
 
 	self assert: (root allElements select: [:each | each isMemberOf: MAMAVDependencies]) size = 1.
-	self assert: (root allElements reject: [:each | each isMemberOf: MAMAVDependencies]) size = 12.
+	self assert: (root allElements reject: [:each | each isMemberOf: MAMAVDependencies]) size = 18.
 ]
 
 { #category : #tests }
@@ -53,6 +53,6 @@ MAMAVDependeciesTest >> testDependenciesElementResolving [
 	dependencies := (root allElements select: [ :each | each isMemberOf: MAMAVDependencies ]) first.
 	
 	self assert: dependencies dependencies isCollection.
-	self assert: dependencies dependencies size = 1.
+	self assert: dependencies dependencies size = 2.
 	self assert: (dependencies dependencies first isMemberOf: MAMAVDependency)
 ]
