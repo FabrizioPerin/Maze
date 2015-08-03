@@ -92,7 +92,7 @@ ConfigurationOfMaze >> baseline30: spec [
 	
 	spec for: #common do: [
 		spec repository: 'http://www.smalltalkhub.com/mc/FabrizioPerin/Maze/main'.
-		spec blessing: #development.
+		spec blessing: #baseline.
 		
 		spec			
 			package: 'Maze-Core';
