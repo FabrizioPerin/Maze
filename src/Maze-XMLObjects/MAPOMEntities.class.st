@@ -14,6 +14,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+MAPOMEntities >> accept: aVisitor [
+	^ aVisitor visit: self
+]
+
+{ #category : #'as yet unclassified' }
 MAPOMEntities >> createFamixEntity [
 
 	^ self subclassResponsibility

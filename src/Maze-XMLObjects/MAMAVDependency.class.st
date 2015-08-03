@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #accessing }
+MAMAVDependency >> accept: aVisitor [
+	^ aVisitor visitDependencyNode: self
+]
+
+{ #category : #accessing }
 MAMAVDependency >> createFamixEntity [
 	| project |
 	

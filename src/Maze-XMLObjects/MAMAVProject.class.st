@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+MAMAVProject >> accept: aVisitor [
+	^ aVisitor visitProjectNode: self
+]
+
+{ #category : #'as yet unclassified' }
 MAMAVProject >> artifactID [
 	^ self elements
 		detect: [ :each | each name = 'artifactId' ]
@@ -33,7 +38,7 @@ MAMAVProject >> createFamixEntity [
 
 { #category : #'as yet unclassified' }
 MAMAVProject >> dependenciesElement [
-	^ self elements
+	^ self allElements
 		detect: [ :each | each isMemberOf: MAMAVDependencies ]
 		ifFound: [ :element | element ]
 		ifNone: [ nil ]
@@ -92,4 +97,9 @@ MAMAVProject >> version [
 		detect: [ :each | each name = 'version' ]
 		ifFound: [ :element | element stringNodes first string ]
 		ifNone: [ nil ]
+]
+
+{ #category : #'as yet unclassified' }
+MAMAVProject >> visit: aMazeXMLNodeVisitor [
+ ^ aMazeXMLNodeVisitor visitProjectNode: self
 ]
