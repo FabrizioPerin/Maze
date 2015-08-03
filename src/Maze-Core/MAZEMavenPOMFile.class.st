@@ -1,6 +1,6 @@
 Class {
 	#name : #MAZEMavenPOMFile,
-	#superclass : #FAMIXNamedEntity,
+	#superclass : #MEEEntity,
 	#instVars : [
 		'project'
 	],
