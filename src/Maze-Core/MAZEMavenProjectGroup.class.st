@@ -1,6 +1,6 @@
 Class {
 	#name : #MAZEMavenProjectGroup,
-	#superclass : #MJAbstractGroup,
+	#superclass : #MEEAbstractGroup,
 	#category : #'Maze-Core'
 }
 

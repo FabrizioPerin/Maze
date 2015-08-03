@@ -1,6 +1,6 @@
 Class {
 	#name : #MAZEMavenDependency,
-	#superclass : #MJAssociation,
+	#superclass : #MEEAssociation,
 	#instVars : [
 		'sourceProject',
 		'targetProject',
@@ -15,7 +15,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 MAZEMavenDependency class >> annotation [
-	<MSEClass: #MavenDependency super: #MJAssociation>
+	<MSEClass: #MavenDependency super: #MEEAssociation>
 	<package: #MAZE>
 	^self
 ]
