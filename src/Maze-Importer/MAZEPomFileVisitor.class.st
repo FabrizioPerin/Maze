@@ -35,6 +35,13 @@ MAZEPomFileVisitor >> visitDependencyNode: aMazeXMLDependencyNode [
 ]
 
 { #category : #'as yet unclassified' }
+MAZEPomFileVisitor >> visitParentNode: aMazeXMLParentNode [
+	
+	^ aMazeXMLParentNode createFamixEntity isStub: true.
+	
+]
+
+{ #category : #'as yet unclassified' }
 MAZEPomFileVisitor >> visitProjectNode: aMazeXMLProjectNode [
 	
 	currentProject := aMazeXMLProjectNode createFamixEntity.

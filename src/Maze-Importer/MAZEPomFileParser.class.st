@@ -35,6 +35,7 @@ MAZEPomFileParser >> initialize [
 		handleElement: 'modules' withClass: MAMAVModules;
 		handleElement: 'module' withClass: MAMAVModule;
 		handleElement: 'dependencies' withClass: MAMAVDependencies;
+		handleElement: 'dependencyManagement' withClass: MAMAVDependencyManagement;
 		handleElement: 'dependency' withClass: MAMAVDependency.
 	
 	^ self

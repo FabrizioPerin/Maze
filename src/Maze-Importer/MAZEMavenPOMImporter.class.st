@@ -24,27 +24,8 @@ MAZEMavenPOMImporter class >> with: aMooseModel on: aRootFolderName [
 	^ imp
 ]
 
-{ #category : #import }
-MAZEMavenPOMImporter >> import [
-	
-	MooseCustomTask
-		runWithProgress: [ :bar | 
-			self importPOMs.
-			bar increment.
-			
-			self reifyElements.
-			bar increment.
-			
-			self importIntoModel.
-			bar increment ]
-		description: 'Importing MAVEN info...'
-		length: 3.
-	
-	^ model
-]
-
-{ #category : #initialization }
-MAZEMavenPOMImporter >> importIntoModel [
+{ #category : #private }
+MAZEMavenPOMImporter >> addToModel [
 
 MooseCustomTask
 		runWithProgress: [ :bar | 
@@ -65,6 +46,28 @@ MooseCustomTask
 ]
 
 { #category : #import }
+MAZEMavenPOMImporter >> import [
+	
+	MooseCustomTask
+		runWithProgress: [ :bar | 
+			self importPOMs.
+			bar increment.
+			
+			self reifyElements.
+			bar increment.
+			
+			self addToModel.
+			bar increment.
+			
+			self reifyMavenCodeConnections.
+			bar increment ]
+		description: 'Importing MAVEN info...'
+		length: 4.
+	
+	^ model
+]
+
+{ #category : #private }
 MAZEMavenPOMImporter >> importPOMs [
 	| rootFolder pomFiles |
 	
@@ -82,47 +85,7 @@ MAZEMavenPOMImporter >> importPOMs [
 
 ]
 
-{ #category : #import }
-MAZEMavenPOMImporter >> importPOMsIntoMooseModel [
-	| rootFolder pomFiles |
-	
-	rootFolder := FileSystemResolver new resolveString: rootFolderName.
-	pomFiles := rootFolder allEntries select: [ :entry | entry isFile and: [ entry name = 'pom.xml' ] ].
-	
-	MooseCustomTask
-		runWithProgress: [ :bar | 
-			pomFiles
-				do: [ :pomFile | 
-					| root projectNodes famixPomFile dependenciesNodes doc |
-					doc := MAZEPomFileParser parserFileNamed: pomFile reference.
-					root := doc root.
-					
-					self halt.
-					"creating project node"
-					projectNodes := root allElements select: [ :el | el isMemberOf: MAMAVProject ] thenCollect: [:el | visitor visit: el ].
-					
-					self assert: projectNodes size = 1.
-				
-					famixPomFile := MAZEMavenPOMFile new name: pomFile reference asString.
-					famixPomFile project: projectNodes first.
-					
-					model silentlyAdd: famixPomFile.
-					model silentlyAdd: projectNodes first.	
-					
-					"creating dependencies"
-					dependenciesNodes := root allElements select: [ :el | el isMemberOf: MAMAVDependency] thenCollect: #createFamixEntity.
-					
-					dependenciesNodes do: [ :dependency | dependency sourceProject: projectNodes first ].
-					
-					model silentlyAddAll: dependenciesNodes.
-					
-					bar increment ] ]
-		description: 'Importing pom files'
-		length: pomFiles size.
-	self halt.
-]
-
-{ #category : #initialization }
+{ #category : #private }
 MAZEMavenPOMImporter >> importProject: pomFile [
 	| root projectNode famixPomFile dependencyNodes doc famixProject |
 	
@@ -144,7 +107,11 @@ MAZEMavenPOMImporter >> importProject: pomFile [
 	
 	"creating dependencies"
 	dependencyNodes := projectNode dependenciesElement dependencies.
-	famixDependencies addAll: (dependencyNodes collect: [ :dependencyNode | dependencyNode accept: visitor ])
+	famixDependencies addAll: (dependencyNodes collect: [ :dependencyNode | dependencyNode accept: visitor ]).
+	
+	projectNode dependencyManagement 
+		ifNotNil: [ :dm | 
+			famixDependencies addAll: (dm dependencies collect: [ :dependencyNode | dependencyNode accept: visitor ] ) ]
 ]
 
 { #category : #initialization }
@@ -170,31 +137,78 @@ MAZEMavenPOMImporter >> model: aMooseModel [
 	model := aMooseModel
 ]
 
-{ #category : #import }
+{ #category : #private }
+MAZEMavenPOMImporter >> reifyDependencies [
+	| stubs |
+	
+	stubs := OrderedCollection new.
+	
+	"cicle on all the known projects to reify their parentNodes"
+	famixDependencies 
+		do: [ :famixDependency |
+			famixProjects
+				detect: [ :famixProject | famixProject isEqualTo: famixDependency ]
+				ifFound: [ :famixProject | famixDependency targetProject: famixProject ] 
+				ifNone: [ 
+					| stubProject |
+					
+					stubProject := famixDependency dependencyNode createTargetStubPrject.
+					stubs add: stubProject.
+					famixDependency targetProject: stubProject ] ].
+			
+	famixProjects addAll: stubs.
+]
+
+{ #category : #private }
 MAZEMavenPOMImporter >> reifyElements [
-	| rootFolder pomFiles |
-	
-	rootFolder := FileSystemResolver new resolveString: rootFolderName.
-	pomFiles := rootFolder allEntries select: [ :entry | entry isFile and: [ entry name = 'pom.xml' ] ].
-	
+		
 	MooseCustomTask
 		runWithProgress: [ :bar | 
-			pomFiles
-				do: [ :pomFile | 
-					
-					self importProject: pomFile.
-					bar increment.
-					
-					self importIntoModel.
-					bar increment ] ]
+			self reifyParents.
+			bar increment.
+			
+			self reifyDependencies.
+			bar increment ]
 		description: 'Importing pom files'
-		length: (pomFiles size * 2).
+		length: 2.
 	
 	^ model
 ]
 
-{ #category : #initialization }
+{ #category : #private }
+MAZEMavenPOMImporter >> reifyMavenCodeConnections [
+	| mavenProjects |
+	
+	mavenProjects := model allMavenProjects.
+	
+	model
+	
+]
+
+{ #category : #private }
 MAZEMavenPOMImporter >> reifyParents [
+	| parentProjectNodes stubs |
+	parentProjectNodes := famixProjects collect: #parentProjectNode.
+	stubs := OrderedCollection new.
+	
+	"cicle on all the known projects to reify their parentNodes"
+	famixProjects
+		do: [ :famixProject | 
+			| parentNode |
+			parentNode := famixProject parentProjectNode.
+			"if a parentNode is attached to this famixPoject element add it as parentNode otherwise create a stub"
+			parentNode
+				ifNotNil: [ :pNode | 
+					famixProjects 
+						detect: [ :famixParentPrj | pNode isEqualTo: famixParentPrj ] 
+						ifFound: [ :famixParentPrj | famixProject parentNode: famixParentPrj ] 
+						ifNone: [ | stubParent |
+							stubParent := pNode accept: visitor.
+							stubParent isStub: true.
+							stubs add: stubParent.
+							famixProject parentNode: stubParent ] ] ].
+			
+	famixProjects addAll: stubs.
 ]
 
 { #category : #accessing }
