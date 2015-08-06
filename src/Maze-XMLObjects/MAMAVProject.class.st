@@ -38,8 +38,17 @@ MAMAVProject >> createFamixEntity [
 
 { #category : #'as yet unclassified' }
 MAMAVProject >> dependenciesElement [
-	^ self allElements
+	^ self elements
 		detect: [ :each | each isMemberOf: MAMAVDependencies ]
+		ifFound: [ :element | element ]
+		ifNone: [ nil ]
+]
+
+{ #category : #'as yet unclassified' }
+MAMAVProject >> dependencyManagement [
+
+	^ self elements
+		detect: [ :each | each isMemberOf: MAMAVDependencyManagement ]
 		ifFound: [ :element | element ]
 		ifNone: [ nil ]
 ]
@@ -64,7 +73,7 @@ MAMAVProject >> groupID [
 	^ self elements
 		detect: [ :each | each name = 'groupId' ]
 		ifFound: [ :element | element stringNodes first string ]
-		ifNone: [ nil ]
+		ifNone: [ self parentProject ifNotNil: [:par| par groupID ] ]
 ]
 
 { #category : #'as yet unclassified' }

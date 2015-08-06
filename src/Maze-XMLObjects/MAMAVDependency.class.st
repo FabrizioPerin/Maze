@@ -11,16 +11,32 @@ MAMAVDependency >> accept: aVisitor [
 
 { #category : #accessing }
 MAMAVDependency >> createFamixEntity [
-	| project |
+	| dependency |
 	
-	project := MAZEMavenDependency new.
-	project artifactID: self artifactID.
-	project groupID: self groupID.
-	project version: self version.
-	project type: self type.
-	project scope: self scope.
+	dependency := MAZEMavenDependency new.
+	dependency artifactID: self artifactID.
+	dependency groupID: self groupID.
+	dependency version: self version.
+	dependency type: self type.
+	dependency scope: self scope.
+	dependency dependencyNode: self.
 	
-	^ project
+	^ dependency
+]
+
+{ #category : #accessing }
+MAMAVDependency >> createTargetStubPrject [
+	| stubProject |
+	
+	stubProject := MAZEMavenProject new.
+	stubProject artifactID: self artifactID.
+	stubProject groupID: self groupID.
+	stubProject version: self version.
+	stubProject type: self type.
+	stubProject scope: self scope.
+	stubProject isStub: true.
+	
+	^ stubProject
 ]
 
 { #category : #accessing }
