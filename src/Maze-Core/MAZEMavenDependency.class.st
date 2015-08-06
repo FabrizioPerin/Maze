@@ -8,7 +8,8 @@ Class {
 		'groupID',
 		'version',
 		'type',
-		'scope'
+		'scope',
+		'dependencyNode'
 	],
 	#category : #'Maze-Core'
 }
@@ -28,6 +29,31 @@ MAZEMavenDependency >> artifactID [
 { #category : #accessing }
 MAZEMavenDependency >> artifactID: aString [
 	artifactID := aString
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> createTargetStubPrject [
+	| stubProject |
+	
+	stubProject := MAZEMavenProject new.
+	stubProject artifactID: self artifactID.
+	stubProject groupID: self groupID.
+	stubProject version: self version.
+	stubProject type: self type.
+	stubProject scope: self scope.
+	stubProject isStub: true.
+	
+	^ stubProject
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> dependencyNode [
+	^ dependencyNode
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> dependencyNode: aMazeDependencyNode [
+	dependencyNode := aMazeDependencyNode
 ]
 
 { #category : #accessing }
@@ -64,6 +90,13 @@ MAZEMavenDependency >> initialize [
 		
 	^ self
 	
+]
+
+{ #category : #accessing }
+MAZEMavenDependency >> isSameProjectAs: aMazeProject [
+	self groupID = aMazeProject groupID ifFalse: [ ^ false ].
+	
+^true
 ]
 
 { #category : #accessing }

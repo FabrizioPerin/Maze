@@ -86,6 +86,17 @@ MAZEMavenProject >> initialize [
 	referencingProjects := FMMultivalueLink on: self opposite: #targetProject:.
 ]
 
+{ #category : #'as yet unclassified' }
+MAZEMavenProject >> isEqualTo: aMazeMavenProject [
+
+	aMazeMavenProject ifNil: [^ false].
+	self groupID = aMazeMavenProject groupID ifFalse: [ ^ false ].
+	self artifactID = aMazeMavenProject artifactID ifFalse: [ ^ false ].
+	self packaging = aMazeMavenProject packaging ifFalse: [ ^ false ].
+	
+	^ true
+]
+
 { #category : #accessing }
 MAZEMavenProject >> modelVersion [
 	^ modelVersion
