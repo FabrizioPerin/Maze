@@ -82,13 +82,13 @@ MAZEMavenPOMImporter >> importPOMs [
 					self importProject: pomFile.
 					bar increment ] ]
 		description: 'Importing pom files'
-		length: (pomFiles size * 2).
+		length: pomFiles size.
 
 ]
 
 { #category : #private }
 MAZEMavenPOMImporter >> importProject: pomFile [
-	| root projectNode famixPomFile dependencyNodes doc famixProject |
+	| root projectNode famixPomFile  doc famixProject |
 	
 	doc := MAZEPomFileParser parserFileNamed: pomFile reference.
 	root := doc root.	
@@ -107,12 +107,13 @@ MAZEMavenPOMImporter >> importProject: pomFile [
 	famixProject parentProjectNode: projectNode parentProject.
 	
 	"creating dependencies"
-	dependencyNodes := projectNode dependenciesElement dependencies.
-	famixDependencies addAll: (dependencyNodes collect: [ :dependencyNode | dependencyNode accept: visitor ]).
+	projectNode dependenciesElement 
+		ifNotNil: [ :de | 
+	famixDependencies addAll: (de dependencies collect: [ :dependencyNode | dependencyNode accept: visitor ])].
 	
 	projectNode dependencyManagement 
 		ifNotNil: [ :dm | 
-			famixDependencies addAll: (dm dependencies collect: [ :dependencyNode | dependencyNode accept: visitor ] ) ]
+			famixDependencies addAll: (dm dependenciesElement dependencies collect: [ :dependencyNode | dependencyNode accept: visitor ] ) ]
 ]
 
 { #category : #initialization }
@@ -149,7 +150,7 @@ MAZEMavenPOMImporter >> reifyDependencies [
 	famixDependencies 
 		do: [ :famixDependency |
 			famixProjects
-				detect: [ :famixProject | famixProject isEqualTo: famixDependency ]
+				detect: [ :famixProject | famixProject isReferencedProject: famixDependency ]
 				ifFound: [ :famixProject | famixDependency targetProject: famixProject ] 
 				ifNone: [ 
 					| stubProject |
@@ -207,13 +208,13 @@ MAZEMavenPOMImporter >> reifyParents [
 			parentNode
 				ifNotNil: [ :pNode | 
 					famixProjects 
-						detect: [ :famixParentPrj | pNode isEqualTo: famixParentPrj ] 
-						ifFound: [ :famixParentPrj | famixProject parentNode: famixParentPrj ] 
+						detect: [ :famixParentPrj | famixParentPrj isEqualsTo: pNode ] 
+						ifFound: [ :famixParentPrj | famixProject parentProject: famixParentPrj ] 
 						ifNone: [ | stubParent |
 							stubParent := pNode accept: visitor.
 							stubParent isStub: true.
 							stubs add: stubParent.
-							famixProject parentNode: stubParent ] ] ].
+							famixProject parentProject: stubParent ] ] ].
 			
 	famixProjects addAll: stubs.
 ]
