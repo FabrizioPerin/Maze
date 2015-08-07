@@ -101,12 +101,23 @@ MAZEMavenProject >> initialize [
 ]
 
 { #category : #testing }
-MAZEMavenProject >> isEqualTo: aMazeMavenProject [
+MAZEMavenProject >> isEqualsTo: aMazeMavenProject [
 
 	aMazeMavenProject ifNil: [^ false].
 	self groupID = aMazeMavenProject groupID ifFalse: [ ^ false ].
 	self artifactID = aMazeMavenProject artifactID ifFalse: [ ^ false ].
-	self packaging = aMazeMavenProject packaging ifFalse: [ ^ false ].
+	self packaging = aMazeMavenProject version ifFalse: [ ^ false ].
+	
+	^ true
+]
+
+{ #category : #testing }
+MAZEMavenProject >> isReferencedProject: aMazeMavenDependency [
+
+	aMazeMavenDependency ifNil: [^ false].
+	self groupID = aMazeMavenDependency groupID ifFalse: [ ^ false ].
+	self artifactID = aMazeMavenDependency artifactID ifFalse: [ ^ false ].
+	self packaging = aMazeMavenDependency type ifFalse: [ ^ false ].
 	
 	^ true
 ]
