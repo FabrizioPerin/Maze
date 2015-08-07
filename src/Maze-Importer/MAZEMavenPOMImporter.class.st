@@ -7,7 +7,8 @@ Class {
 		'visitor',
 		'famixDependencies',
 		'famixProjects',
-		'famixPomFiles'
+		'famixPomFiles',
+		'unconnectedElements'
 	],
 	#category : #'Maze-Importer'
 }
@@ -64,7 +65,7 @@ MAZEMavenPOMImporter >> import [
 		description: 'Importing MAVEN info...'
 		length: 4.
 	
-	^ model
+	^ self 
 ]
 
 { #category : #private }
@@ -123,6 +124,7 @@ MAZEMavenPOMImporter >> initialize [
 	famixDependencies := OrderedCollection new.
 	famixProjects := OrderedCollection new.
 	famixPomFiles := OrderedCollection new.
+	unconnectedElements := OrderedCollection new.
 	
 	^ self
 ]
@@ -177,12 +179,17 @@ MAZEMavenPOMImporter >> reifyElements [
 
 { #category : #private }
 MAZEMavenPOMImporter >> reifyMavenCodeConnections [
-	| mavenProjects |
-	
-	mavenProjects := model allMavenProjects.
-	
-	model
-	
+
+	model allModelClasses
+		do: [ :famixClass | 
+			model allMavenProjects
+				do: [ :famixMavProject | 
+					(((MooseUtilities demoosify: famixClass belongsTo mooseName) findString: famixMavProject groupID) > 0
+						and: [ (famixClass sourceAnchor mooseName findString: famixMavProject artifactID) > 0 ])
+						ifTrue: [ famixClass mavenProject: famixMavProject ] ].
+					
+			(famixClass mavenProject isNil or: [ (famixClass mavenPoject isMemberOf: MAMAVProject) not ])
+				ifTrue: [ unconnectedElements add: famixClass ] ]
 ]
 
 { #category : #private }
