@@ -12,7 +12,8 @@ Class {
 		'parentProject',
 		'childProject',
 		'pomFile',
-		'parentProjectNode'
+		'parentProjectNode',
+		'containedSourceCodeElements'
 	],
 	#category : #'Maze-Core'
 }
@@ -22,6 +23,12 @@ MAZEMavenProject class >> annotation [
 	<MSEClass: #MavenProject super: #FAMIXNamedEntity>
 	<package: #MAZE>
 	^self
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> addContainedSourceCodeElement: aFamixContainedSourceCodeElement [
+
+	self containedSourceCodeElements add: aFamixContainedSourceCodeElement 
 ]
 
 { #category : #accessing }
@@ -64,7 +71,12 @@ MAZEMavenProject >> childProject: aMAZEMavenProject [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+MAZEMavenProject >> containedSourceCodeElements [
+	^ containedSourceCodeElements
+]
+
+{ #category : #accessing }
 MAZEMavenProject >> fullyQualifiedArtifactName [
 	^self groupID, '.', self artifactID, ':', self version
 ]
@@ -79,14 +91,16 @@ MAZEMavenProject >> groupID: aString [
 	groupID := aString
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MAZEMavenProject >> initialize [
 	super initialize.
+	
 	referencedProjects := FMMultivalueLink on: self opposite: #sourceProject:.
 	referencingProjects := FMMultivalueLink on: self opposite: #targetProject:.
+	containedSourceCodeElements := FMMultivalueLink on: self opposite: #mavenProject:
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 MAZEMavenProject >> isEqualTo: aMazeMavenProject [
 
 	aMazeMavenProject ifNil: [^ false].
@@ -188,6 +202,11 @@ MAZEMavenProject >> referencingProjects [
 { #category : #accessing }
 MAZEMavenProject >> referencingProjects: aMAZEMavenDependency [
 	referencingProjects value: aMAZEMavenDependency
+]
+
+{ #category : #accessing }
+MAZEMavenProject >> resetContainedSourceCodeElements [
+	containedSourceCodeElements := FMMultivalueLink on: self opposite: #mavenProject:
 ]
 
 { #category : #accessing }
