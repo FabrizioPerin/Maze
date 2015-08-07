@@ -189,7 +189,7 @@ MAZEMavenPOMImporter >> reifyMavenCodeConnections [
 						and: [ (famixClass sourceAnchor mooseName findString: famixMavProject artifactID) > 0 ])
 						ifTrue: [ famixClass mavenProject: famixMavProject ] ].
 					
-			(famixClass mavenProject isNil or: [ (famixClass mavenPoject isMemberOf: MAMAVProject) not ])
+			(famixClass mavenProject isNil or: [ (famixClass mavenProject isMemberOf: MAZEMavenProject) not ])
 				ifTrue: [ unconnectedElements add: famixClass ] ]
 ]
 
