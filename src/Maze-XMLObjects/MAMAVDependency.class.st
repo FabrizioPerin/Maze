@@ -32,8 +32,10 @@ MAMAVDependency >> createTargetStubPrject [
 	stubProject artifactID: self artifactID.
 	stubProject groupID: self groupID.
 	stubProject version: self version.
-	stubProject type: self type.
-	stubProject scope: self scope.
+	stubProject packaging: self packaging.
+	stubProject modelVersion: self modelVersion.
+	stubProject version: self version.
+
 	stubProject isStub: true.
 	
 	^ stubProject
