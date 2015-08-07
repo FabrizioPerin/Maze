@@ -55,6 +55,39 @@ MAZEMavenProjectTests >> testAddReferencingProject [
 ]
 
 { #category : #'as yet unclassified' }
+MAZEMavenProjectTests >> testAssignClassTo2MavenProjects [
+	| famixClass mavenProject1 mavenProject2 |
+	
+	famixClass := FAMIXClass new.
+	mavenProject1 := MAZEMavenProject new.
+	mavenProject2 := MAZEMavenProject new.
+	
+	self assert: famixClass mavenProject isNil.
+	self assert: (mavenProject1 containedSourceCodeElements isMemberOf: FMMultivalueLink).
+	self assert: mavenProject1 containedSourceCodeElements isEmpty.
+	self assert: (mavenProject2 containedSourceCodeElements isMemberOf: FMMultivalueLink).
+	self assert: mavenProject2 containedSourceCodeElements isEmpty.
+	
+	mavenProject1 addContainedSourceCodeElement: famixClass.
+	
+	self assert: mavenProject1 containedSourceCodeElements size equals: 1.
+	self assert: mavenProject1 containedSourceCodeElements first equals: famixClass.
+	self assert: (mavenProject2 containedSourceCodeElements isMemberOf: FMMultivalueLink).
+	self assert: mavenProject2 containedSourceCodeElements isEmpty.	
+	self assert: famixClass mavenProject isNil not.
+	self assert: famixClass mavenProject equals: mavenProject1.
+	
+	mavenProject2 addContainedSourceCodeElement: famixClass.	
+	
+	self assert: mavenProject1 containedSourceCodeElements isEmpty.
+	self assert: mavenProject2 containedSourceCodeElements size equals: 1.
+	self assert: mavenProject2 containedSourceCodeElements first equals: famixClass.
+	self assert: famixClass mavenProject isNil not.
+	self assert: famixClass mavenProject equals: mavenProject2.
+	
+]
+
+{ #category : #'as yet unclassified' }
 MAZEMavenProjectTests >> testCreation [
 	| project |
 	
