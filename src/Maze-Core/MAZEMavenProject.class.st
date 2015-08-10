@@ -106,7 +106,7 @@ MAZEMavenProject >> isEqualsTo: aMazeMavenProject [
 	aMazeMavenProject ifNil: [^ false].
 	self groupID = aMazeMavenProject groupID ifFalse: [ ^ false ].
 	self artifactID = aMazeMavenProject artifactID ifFalse: [ ^ false ].
-	self packaging = aMazeMavenProject version ifFalse: [ ^ false ].
+	self version = aMazeMavenProject version ifFalse: [ ^ false ].
 	
 	^ true
 ]
@@ -118,6 +118,7 @@ MAZEMavenProject >> isReferencedProject: aMazeMavenDependency [
 	self groupID = aMazeMavenDependency groupID ifFalse: [ ^ false ].
 	self artifactID = aMazeMavenDependency artifactID ifFalse: [ ^ false ].
 	self packaging = aMazeMavenDependency type ifFalse: [ ^ false ].
+	aMazeMavenDependency version ifNotNil: [ :v | self version = v ifFalse: [ ^ false ] ].
 	
 	^ true
 ]
