@@ -8,7 +8,8 @@ Class {
 		'famixDependencies',
 		'famixProjects',
 		'famixPomFiles',
-		'unconnectedElements'
+		'unconnectedElements',
+		'stubProjectsCache'
 	],
 	#category : #'Maze-Importer'
 }
@@ -126,6 +127,8 @@ MAZEMavenPOMImporter >> initialize [
 	famixProjects := OrderedCollection new.
 	famixPomFiles := OrderedCollection new.
 	unconnectedElements := OrderedCollection new.
+	
+	stubProjectsCache := Dictionary new.
 	
 	^ self
 ]
