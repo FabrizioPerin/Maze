@@ -104,7 +104,7 @@ MAZEMavenProjectTests >> testCreation [
 	self assert: (project version = '1.0').
 	self assert: (project modelVersion = '4.0.0').
 	self assert: (project parentProject = nil).
-	self assert: (project childProject = nil).
+	self assert: (project childProjects isMemberOf: FMMultivalueLink).
 	self assert: (project fullyQualifiedArtifactName = 'org.codehaus.mojo.my-project:1.0').
 	self assert: (project referencedProjects isMemberOf: FMMultivalueLink).
 	self assert: (project referencedProjects size = 0).
@@ -125,7 +125,7 @@ MAZEMavenProjectTests >> testCreationSimple [
 	self assert: project packaging isNil.
 	self assert: project modelVersion isNil.
 	self assert: project parentProject isNil.
-	self assert: project childProject isNil.
+	self assert: (project childProjects isMemberOf: FMMultivalueLink).
 	self assert: project modelVersion isNil.
 	self assert: (project referencedProjects isMemberOf: FMMultivalueLink).
 	self assert: (project referencedProjects size = 0).
@@ -140,13 +140,43 @@ MAZEMavenProjectTests >> testSetChildProject [
 	project := MAZEMavenProject new.
 	childProject := MAZEMavenProject new.
 	
-	self assert: project childProject isNil.
+	self assert: (project childProjects isMemberOf: FMMultivalueLink).
 	self assert: childProject parentProject isNil.
 	
-	project childProject: childProject.
+	project childProjects: childProject.
 	
-	self assert: project childProject = childProject.
-	self assert: childProject parentProject = project.
+	self assert: project childProjects size equals: 1.
+	self assert: project childProjects first equals: childProject.
+	self assert: childProject parentProject equals: project.
+	
+]
+
+{ #category : #'as yet unclassified' }
+MAZEMavenProjectTests >> testSetMultipleChildProjects [
+	| project childProject1 childProject2 |
+	
+	project := MAZEMavenProject new.
+	childProject1 := MAZEMavenProject new.
+	childProject2 := MAZEMavenProject new.
+	
+	self assert: (project childProjects isMemberOf: FMMultivalueLink).
+	self assert: childProject1 parentProject isNil.
+	self assert: childProject2 parentProject isNil.
+	
+	project childProjects: childProject1.
+	
+	self assert: project childProjects size equals: 1.
+	self assert: project childProjects first equals: childProject1.
+	self assert: childProject1 parentProject equals: project.
+	
+	project childProjects: childProject2.
+	
+	self assert: project childProjects size equals: 2.
+	self assert: project childProjects first equals: childProject1.
+	self assert: childProject1 parentProject equals: project.
+	self assert: project childProjects second equals: childProject2.
+	self assert: childProject2 parentProject equals: project.
+	
 	
 ]
 
@@ -158,11 +188,11 @@ MAZEMavenProjectTests >> testSetParentProject [
 	parentProject := MAZEMavenProject new.
 	
 	self assert: project parentProject isNil.
-	self assert: parentProject childProject isNil.
+	self assert: (parentProject childProjects isMemberOf: FMMultivalueLink).
 	
 	project parentProject: parentProject.
 	
-	self assert: project parentProject = parentProject.
-	self assert: parentProject childProject = project.
+	self assert: project parentProject equals: parentProject.
+	self assert: parentProject childProjects first equals: project.
 	
 ]
