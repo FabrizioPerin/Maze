@@ -10,7 +10,7 @@ Class {
 		'referencedProjects',
 		'referencingProjects',
 		'parentProject',
-		'childProject',
+		'childProjects',
 		'pomFile',
 		'parentProjectNode',
 		'containedSourceCodeElements'
@@ -57,18 +57,14 @@ MAZEMavenProject >> belongsTo [
 ]
 
 { #category : #accessing }
-MAZEMavenProject >> childProject [
-	^ childProject
+MAZEMavenProject >> childProjects [
+	^ childProjects
 ]
 
 { #category : #accessing }
-MAZEMavenProject >> childProject: aMAZEMavenProject [
+MAZEMavenProject >> childProjects: aMAZEMavenProject [
 
-		(aMAZEMavenProject = self childProject)
-		ifFalse: [ 
-			childProject := aMAZEMavenProject.
-			aMAZEMavenProject parentProject: self ]. 
-
+	childProjects add: aMAZEMavenProject 
 ]
 
 { #category : #accessing }
@@ -97,7 +93,10 @@ MAZEMavenProject >> initialize [
 	
 	referencedProjects := FMMultivalueLink on: self opposite: #sourceProject:.
 	referencingProjects := FMMultivalueLink on: self opposite: #targetProject:.
-	containedSourceCodeElements := FMMultivalueLink on: self opposite: #mavenProject:
+	containedSourceCodeElements := FMMultivalueLink on: self opposite: #mavenProject:.
+	childProjects := FMMultivalueLink on: self opposite: #parentProject:.
+	
+	^ self
 ]
 
 { #category : #testing }
@@ -151,10 +150,11 @@ MAZEMavenProject >> parentProject [
 { #category : #accessing }
 MAZEMavenProject >> parentProject: aMAZEMavenProject [
 
-	(aMAZEMavenProject = self parentProject)
-		ifFalse: [ 
-			parentProject := aMAZEMavenProject.
-			aMAZEMavenProject childProject: self ]. 
+	parentProject := FMMultivalueLink 
+							on: self
+							update: #childProjects
+							from: self parentProject 
+							to: aMAZEMavenProject
 
 ]
 
